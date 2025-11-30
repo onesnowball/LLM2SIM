@@ -9,23 +9,15 @@ build/
 
 # Jupyter
 .ipynb_checkpoints/
-*.ipynb
+
+# macOS
+.DS_Store
 
 # IDE
-.vscode/
 .idea/
+.vscode/
+*.swp
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Generated scenarios (keep handwritten)
-scenarios/generated/
-
-# Large files
-*.pptx
-
-# Environment
-.env
-*.env
+# Generated scenarios (optional - remove if you want to track them)
+# scenarios/generated/
 

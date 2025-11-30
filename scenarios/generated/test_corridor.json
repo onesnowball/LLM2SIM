@@ -1,0 +1,98 @@
+{
+  "metadata": {
+    "scenario_id": "test_corridor",
+    "seed": 42,
+    "prompt_text": "A robot walking down a corridor while two humans approach from the opposite direction",
+    "model_name": "llm-generated"
+  },
+  "map": {
+    "type": "corridor",
+    "bounds": [
+      -6.0,
+      -3.0,
+      6.0,
+      3.0
+    ],
+    "obstacles": [
+      [
+        [
+          -6.0,
+          3.0
+        ],
+        [
+          6.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          -6.0,
+          -3.0
+        ],
+        [
+          6.0,
+          -3.0
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -5.0,
+        0.0
+      ],
+      "goal": [
+        5.0,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        4.0,
+        1.0
+      ],
+      "goal": [
+        -4.0,
+        1.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        4.0,
+        -1.0
+      ],
+      "goal": [
+        -4.0,
+        -1.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.05,
+    "max_steps": 2000
+  },
+  "events": []
+}
