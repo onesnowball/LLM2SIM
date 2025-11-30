@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "scenario_id": "corridor_002",
+    "seed": 123,
+    "prompt_text": "A robot following behind a pair of humans walking side by side in a corridor, trying to overtake when there is space.",
+    "model_name": "handwritten"
+  },
+  "map": {
+    "type": "corridor",
+    "bounds": [-8.0, -3.0, 8.0, 3.0],
+    "obstacles": [
+      { "p1": [-8.0, -3.0], "p2": [8.0, -3.0] },
+      { "p1": [-8.0,  3.0], "p2": [8.0,  3.0] }
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": { "x": -6.0, "y": 0.0 },
+      "goal":  { "x":  7.0, "y": 0.0 },
+      "radius": 0.3,
+      "v_pref": 1.2,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": { "x": -2.0, "y": 0.5 },
+      "goal":  { "x":  6.0, "y": 0.5 },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 1
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": { "x": -2.0, "y": -0.5 },
+      "goal":  { "x":  6.0, "y": -0.5 },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 1
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.25,
+    "max_steps": 250
+  },
+  "events": []
+}

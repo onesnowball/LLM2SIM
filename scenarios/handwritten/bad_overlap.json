@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "scenario_id": "bad_overlap",
+    "seed": 0,
+    "prompt_text": "Two agents starting almost at the same position in a corridor.",
+    "model_name": "handwritten"
+  },
+  "map": {
+    "type": "corridor",
+    "bounds": [-4.0, -4.0, 4.0, 4.0],
+    "obstacles": []
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": { "x": 0.0, "y": 0.0 },
+      "goal":  { "x": 3.0, "y": 0.0 },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": { "x": 0.05, "y": 0.0 },
+      "goal":  { "x": -3.0, "y": 0.0 },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.25,
+    "max_steps": 150
+  },
+  "events": []
+}

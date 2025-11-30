@@ -1,0 +1,44 @@
+{
+  "metadata": {
+    "scenario_id": "out_of_bounds",
+    "seed": 1,
+    "prompt_text": "Agent goals lie partially outside the map bounds.",
+    "model_name": "handwritten"
+  },
+  "map": {
+    "type": "corridor",
+    "bounds": [-4.0, -2.0, 4.0, 2.0],
+    "obstacles": []
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": { "x": 0.0, "y": 0.0 },
+      "goal":  { "x": 10.0, "y": 0.0 },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": { "x": -5.0, "y": 1.5 },
+      "goal":  { "x": -10.0, "y": 1.5 },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.25,
+    "max_steps": 150
+  },
+  "events": []
+}
