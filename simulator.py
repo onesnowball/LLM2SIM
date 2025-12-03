@@ -1,13 +1,8 @@
 #!/usr/bin/env python3
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-from matplotlib.patches import Circle
 from typing import List, Dict, Tuple, Optional
-from IPython.display import HTML
 import time
 import logging
-from matplotlib.animation import PillowWriter
 import os
 
 
@@ -16,7 +11,6 @@ class MultiHumanTracker: pass
 
 import gymnasium as gym
 from gymnasium import spaces
-import torch as th
 
 class stateutils:
     @staticmethod
@@ -119,7 +113,7 @@ class GoalPolicy:
     
 class RLPolicy:
     def __init__(self, model, max_speed=1.0, n_humans=2, state_dim=5):
-        self.max_speed = 1.0
+        self.max_speed = max_speed
         self.model = model
         self.n_humans = n_humans
         self.state_dim = state_dim
@@ -127,18 +121,35 @@ class RLPolicy:
     def predict(self, obs):
         obs = obs[:int(self.state_dim + self.state_dim * self.n_humans)]
         action, _ = self.model.predict(obs)
+        return self._clip_speed(action)
+
+    def _clip_speed(self, action):
+        speed = np.linalg.norm(action)
+        if speed > self.max_speed:
+            return action / (speed + 1e-9) * self.max_speed
         return action
     
 class ILPolicy:
     def __init__(self, model, max_speed=1.0, n_humans=2, state_dim=5):
-        self.max_speed = 1.0
+        self.max_speed = max_speed
         self.model = model
         self.n_humans = n_humans
         self.state_dim = state_dim
 
     def predict(self, obs):
+        try:
+            import torch as th
+        except ImportError as exc:  # pragma: no cover - optional dependency
+            raise ImportError("torch is required for ILPolicy.predict") from exc
+
         obs = obs[:int(self.state_dim + self.state_dim * self.n_humans)]
         action = self.model(th.tensor(obs)).cpu().detach().numpy()
+        return self._clip_speed(action)
+
+    def _clip_speed(self, action):
+        speed = np.linalg.norm(action)
+        if speed > self.max_speed:
+            return action / (speed + 1e-9) * self.max_speed
         return action
 
 class SocialForceModel:
@@ -574,6 +585,18 @@ class CrowdSimulator(gym.Env):
         return False
 
     def visualize_simulation(self, tracker: Optional[MultiHumanTracker] = None, output_file: Optional[str] = None, show_plot: bool = True):
+        try:
+            import matplotlib.pyplot as plt
+            import matplotlib.animation as animation
+            from matplotlib.patches import Circle
+            from matplotlib.animation import PillowWriter
+            from IPython.display import HTML
+        except ImportError as exc:  # pragma: no cover - optional dependency
+            raise ImportError(
+                "matplotlib and IPython are required for visualization. "
+                "Install extras or disable --visualize."
+            ) from exc
+
         fig, ax = plt.subplots(figsize=(10, 10))
         ax.set_xlim(-7, 7)
         ax.set_ylim(-7, 7)
