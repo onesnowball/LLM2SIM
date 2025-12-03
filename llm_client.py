@@ -66,8 +66,7 @@ class LLMClient:
         )
 
     def _setup_gemini_client(self) -> None:
-        # Read from env var, or use hardcoded fallback
-        api_key = os.environ.get("GEMINI_API_KEY") or "AIzaSyC1hmISVTGqwXMQ7RodD6B9er9gf85vM0Q"
+        api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
             raise MissingCredentialError(
                 "GEMINI_API_KEY environment variable is required for Gemini provider."
@@ -78,6 +77,7 @@ class LLMClient:
         # Use the thinking model again
         self._gemini_model = self.config.model or "gemini-2.5-flash"
         self._requests = _requests
+        self._session = _requests.Session()
 
 
     def generate(self, system_prompt: str, user_prompt: str) -> str:
@@ -100,7 +100,29 @@ class LLMClient:
                     break
                 time.sleep(self.config.retry_backoff ** attempt)
         raise RuntimeError(f"LLM request failed after retries: {last_err}") from last_err
-        
+
+    def _call_llama(self, system_prompt: str, user_prompt: str) -> str:
+        """Call the Hugging Face Inference API for chat-style completion."""
+
+        prompt = (system_prompt + "\n\n" + user_prompt).strip()
+        response = self._client.text_generation(
+            prompt,
+            max_new_tokens=self.config.max_output_tokens,
+            temperature=self.config.temperature,
+            stop_sequences=["</s>"],
+        )
+
+        # `text_generation` returns a string for non-streaming usage
+        if isinstance(response, str):
+            return response.strip()
+
+        # Some versions return an object with `generated_text`
+        generated = getattr(response, "generated_text", None)
+        if isinstance(generated, str):
+            return generated.strip()
+
+        raise RuntimeError(f"Unexpected Llama response type: {type(response)!r}")
+
     def _call_gemini(self, system_prompt: str, user_prompt: str) -> str:
         """
         Call Gemini 2.5 Flash with a *capped* thinking budget.
@@ -135,7 +157,7 @@ class LLMClient:
             },
         }
 
-        resp = self._requests.post(url, json=payload, timeout=self.config.timeout)
+        resp = self._session.post(url, json=payload, timeout=self.config.timeout)
 
         try:
             resp.raise_for_status()
@@ -148,22 +170,9 @@ class LLMClient:
 
         # ---- Pull the first non-thought text part, if any ----
         try:
-            candidates = data["candidates"]
-            if not candidates:
-                raise KeyError("no candidates")
-
-            content = candidates[0]["content"]
-            parts = content.get("parts", [])
-
-            for part in parts:
-                txt = part.get("text")
-                if not txt:
-                    continue
-                # If Google ever sets part["thought"] for summaries, skip them
-                if part.get("thought"):
-                    continue
-                return txt
-
+            text = self._extract_gemini_text(data)
+            if text:
+                return text
         except (KeyError, IndexError, TypeError):
             # fall through to error below
             pass
@@ -177,4 +186,25 @@ class LLMClient:
             f"totalTokenCount={usage.get('totalTokenCount')}.\n"
             f"Raw response: {data}"
         )
+
+    @staticmethod
+    def _extract_gemini_text(data: dict) -> Optional[str]:
+        """Return the first non-thought text part from a Gemini response."""
+
+        candidates = data["candidates"]
+        if not candidates:
+            raise KeyError("no candidates")
+
+        content = candidates[0]["content"]
+        parts = content.get("parts", [])
+
+        for part in parts:
+            txt = part.get("text")
+            if not txt:
+                continue
+            if part.get("thought"):
+                continue
+            return txt
+
+        return None
 
