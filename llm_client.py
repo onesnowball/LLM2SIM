@@ -66,13 +66,19 @@ class LLMClient:
         )
 
     def _setup_gemini_client(self) -> None:
-        api_key = os.environ.get("GEMINI_API_KEY") or "AIzaSyC1hmISVTGqwXMQ7RodD6B9er9gf85vM0Q"
+        api_key = os.environ.get("GEMINI_API_KEY")
         if not api_key:
             raise MissingCredentialError(
                 "GEMINI_API_KEY environment variable is required for Gemini provider."
             )
 
-        import requests as _requests
+        try:
+            import requests as _requests
+        except ImportError as exc:
+            raise MissingDependencyError(
+                "requests is required for the Gemini provider."
+            ) from exc
+
         self._gemini_api_key = api_key
         # Use the thinking model again
         self._gemini_model = self.config.model or "gemini-2.5-flash"
@@ -157,25 +163,25 @@ class LLMClient:
             },
         }
 
-        resp = self._session.post(url, json=payload, timeout=self.config.timeout)
+        try:
+            resp = self._session.post(url, json=payload, timeout=self.config.timeout)
+            resp.raise_for_status()
+        except self._requests.RequestException as exc:  # pragma: no cover - HTTP errors
+            status = getattr(resp, "status_code", "unknown") if "resp" in locals() else "unknown"
+            error_summary = self._summarize_gemini_error(resp) if "resp" in locals() else "<no response>"
+            raise RuntimeError(f"Gemini HTTP error {status}: {error_summary}") from exc
 
         try:
-            resp.raise_for_status()
-        except Exception as e:
+            data = resp.json()
+        except ValueError as exc:
             raise RuntimeError(
-                f"Gemini HTTP error {resp.status_code}: {resp.text}"
-            ) from e
-
-        data = resp.json()
+                f"Gemini returned non-JSON response: {resp.text[:500]}"
+            ) from exc
 
         # ---- Pull the first non-thought text part, if any ----
-        try:
-            text = self._extract_gemini_text(data)
-            if text:
-                return text
-        except (KeyError, IndexError, TypeError):
-            # fall through to error below
-            pass
+        text = self._extract_gemini_text(data)
+        if text:
+            return text
 
         usage = data.get("usageMetadata", {})
         raise RuntimeError(
@@ -187,22 +193,48 @@ class LLMClient:
             f"Raw response: {data}"
         )
 
+    def _summarize_gemini_error(self, resp) -> str:
+        """Return a concise error description with credential guidance when relevant."""
+
+        suggestion = ""
+        if resp.status_code in (401, 403):
+            suggestion = " (check GEMINI_API_KEY; rotate if revoked or reported leaked)"
+
+        try:
+            payload = resp.json()
+            error_info = payload.get("error") if isinstance(payload, dict) else None
+        except ValueError:
+            error_info = None
+
+        if isinstance(error_info, dict):
+            code = error_info.get("code")
+            status = error_info.get("status")
+            message = error_info.get("message")
+            details = ", ".join(str(part) for part in (code, status, message) if part)
+            if details:
+                return details + suggestion
+
+        return resp.text[:500] + suggestion
+
     @staticmethod
     def _extract_gemini_text(data: dict) -> Optional[str]:
         """Return the first non-thought text part from a Gemini response."""
 
-        candidates = data["candidates"]
-        if not candidates:
-            raise KeyError("no candidates")
+        candidates = data.get("candidates")
+        if not candidates or not isinstance(candidates, list):
+            return None
 
-        content = candidates[0]["content"]
-        parts = content.get("parts", [])
+        first_candidate = candidates[0] or {}
+        content = first_candidate.get("content", {})
+        parts = content.get("parts") if isinstance(content, dict) else None
+        if not parts or not isinstance(parts, list):
+            return None
 
         for part in parts:
-            txt = part.get("text")
-            if not txt:
+            if not isinstance(part, dict):
                 continue
-            if part.get("thought"):
+            txt = part.get("text")
+            if not txt or part.get("thought"):
                 continue
             return txt
 
