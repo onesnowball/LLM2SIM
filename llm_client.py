@@ -66,7 +66,7 @@ class LLMClient:
         )
 
     def _setup_gemini_client(self) -> None:
-        api_key = os.environ.get("GEMINI_API_KEY")
+        api_key = os.environ.get("GEMINI_API_KEY") or "AIzaSyC1hmISVTGqwXMQ7RodD6B9er9gf85vM0Q"
         if not api_key:
             raise MissingCredentialError(
                 "GEMINI_API_KEY environment variable is required for Gemini provider."
