@@ -7,6 +7,9 @@ from typing import List, Dict, Tuple, Optional
 from IPython.display import HTML
 import time
 import logging
+from matplotlib.animation import PillowWriter
+import os
+
 
 class Agent: pass
 class MultiHumanTracker: pass
@@ -40,6 +43,9 @@ class Agent:
         self.velocity_history = [(vx, vy)]
         self.preferred_velocity = np.array([0.0, 0.0])
 
+        self.init_px, self.init_py = x, y
+        self.init_gx, self.init_gy = gx, gy
+        
     def get_position(self) -> Tuple[float, float]:
         return np.array([self.px, self.py])
 
@@ -498,15 +504,11 @@ class CrowdSimulator(gym.Env):
         return obs, float(reward), bool(self.done and self.status in ('AllAtGoal', 'Collision')), bool(self.done and self.status == 'Timeout'), self.info
     
     def set_circle_crossing(self):
-        """
-        Creates a circle crossing scenario and resets the simulator to it.
-        Humans are set to randomized collision-free positions along a circle around the origin of the workspace.
-        Their goals are set to the opposite position across the circle.
-        """
+
         for a, agent in enumerate(self.all_agents):
             if agent.id == self.robot.id:
                 agent.px, agent.py = agent.position_history[0]
-                agent.vx, agent.vy = agent.position_history[0]
+                agent.vx, agent.vy = 0.0, 0.0
                 agent.position_history = [(agent.px, agent.py)]
                 agent.preferred_velocity = np.array([0.0, 0.0])
             else:
@@ -534,19 +536,29 @@ class CrowdSimulator(gym.Env):
                 
 
     def reset(self, *, seed=None, options=None):
-        """
-        Resets the simulation using a circle crossing scenario.
-        Keeps obstacles, groups, and policies intact.
-        """
+
         super().reset(seed=seed)
         self.current_step = 0
         self.done = False
         self.info = {}
-
-        self.set_circle_crossing()
+    
+        if self.randomize_humans:
+            self.set_circle_crossing()
+        else:
+            # Restore each agent to its scenario-defined initial state
+            for agent in self.all_agents:
+                # positions
+                agent.px, agent.py = agent.init_px, agent.init_py
+                # goals
+                agent.gx, agent.gy = agent.init_gx, agent.init_gy
+                # velocities reset
+                agent.vx, agent.vy = 0.0, 0.0
+                agent.position_history = [(agent.px, agent.py)]
+                agent.velocity_history = [(0.0, 0.0)]
+                agent.preferred_velocity = np.array([0.0, 0.0])
+    
         obs = self._get_obs()
         return obs, self.info
-
 
 
     def _check_collisions(self) -> bool:
@@ -628,12 +640,19 @@ class CrowdSimulator(gym.Env):
         anim = animation.FuncAnimation(fig, update, frames=num_frames, interval=150, init_func=init, blit=False)
         
         if output_file:
+            # Ensure we write a GIF using Pillow
+            root, ext = os.path.splitext(output_file)
+            if ext.lower() != ".gif":
+                output_file = root + ".gif"
+        
             print(f"Saving animation to {output_file}...")
-            anim.save(output_file, writer='ffmpeg', fps=12)
+            writer = PillowWriter(fps=12)
+            anim.save(output_file, writer=writer)
             print("Save complete.")
+        
         if show_plot:
             return HTML(anim.to_jshtml())
-        
+
     def calculate_metrics(self) -> Dict:
         """
         Calculates simulation metrics after a run is complete.

@@ -5,8 +5,8 @@ from scenario_validator import validate_and_repair
 from scenario_adapter import scenario_to_simulator
 
 
-def run_once(path: str, visualize: bool = False):
-    # Load + validate
+def run_once(path: str, visualize: bool = False, output_file: str = None):
+
     scenario = load_scenario(path)
     scenario, logs = validate_and_repair(scenario)
 
@@ -34,7 +34,7 @@ def run_once(path: str, visualize: bool = False):
         step_count += 1
 
     print(f"Simulation finished in {step_count} steps.")
-    status = getattr(sim, "status", None)
+    status = info.get("status", "unknown")
     print("Final sim.status:", status)
 
     metrics = sim.calculate_metrics()
@@ -43,14 +43,16 @@ def run_once(path: str, visualize: bool = False):
         print(f"  {k}: {v}")
 
     anim_html = None
-    if visualize:
+    if visualize or output_file is not None:
         try:
-            anim_html = sim.visualize_simulation(show_plot=True)
+            anim_html = sim.visualize_simulation(
+                output_file=output_file,
+                show_plot=visualize,   # only embed when visualize=True
+            )
         except Exception as e:
             print("Visualization failed:", e)
 
     return metrics, anim_html
-
 
 def main():
     parser = argparse.ArgumentParser(description="Run a JSON-defined crowd scenario.")

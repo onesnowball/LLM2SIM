@@ -46,7 +46,6 @@ class LLMClient:
         else:
             self._setup_gemini_client()
 
-    # -- provider setup -------------------------------------------------
     def _setup_llama_client(self) -> None:
         token = os.environ.get("HF_TOKEN")
         if not token:
@@ -60,7 +59,6 @@ class LLMClient:
                 "huggingface-hub is required for the Llama provider."
             ) from exc
 
-        # Use router endpoint and a publicly available instruct model
         model = self.config.model or "mistralai/Mistral-7B-Instruct-v0.2"
         self._client = InferenceClient(
             model=model,
@@ -74,13 +72,14 @@ class LLMClient:
             raise MissingCredentialError(
                 "GEMINI_API_KEY environment variable is required for Gemini provider."
             )
-        # Use direct HTTP requests instead of heavy SDK
+
         import requests as _requests
         self._gemini_api_key = api_key
+        # Use the thinking model again
         self._gemini_model = self.config.model or "gemini-2.5-flash"
         self._requests = _requests
 
-    # -- public API -----------------------------------------------------
+
     def generate(self, system_prompt: str, user_prompt: str) -> str:
         """
         Execute a chat completion request with retries.
@@ -101,31 +100,81 @@ class LLMClient:
                     break
                 time.sleep(self.config.retry_backoff ** attempt)
         raise RuntimeError(f"LLM request failed after retries: {last_err}") from last_err
-
-    # -- provider-specific calls ---------------------------------------
-    def _call_llama(self, system_prompt: str, user_prompt: str) -> str:
-        # Use Mistral instruct format
-        combined_prompt = f"<s>[INST] {system_prompt}\n\n{user_prompt} [/INST]"
-        response = self._client.text_generation(
-            prompt=combined_prompt,
-            temperature=self.config.temperature,
-            max_new_tokens=self.config.max_output_tokens,
-        )
-        return response
-
+        
     def _call_gemini(self, system_prompt: str, user_prompt: str) -> str:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self._gemini_model}:generateContent?key={self._gemini_api_key}"
+        """
+        Call Gemini 2.5 Flash with a *capped* thinking budget.
+        We explicitly limit thinking so the model can't eat the
+        entire token budget on thoughts and return no answer.
+        """
+
+        url = (
+            "https://generativelanguage.googleapis.com/v1beta/"
+            f"models/{self._gemini_model}:generateContent?key={self._gemini_api_key}"
+        )
+
+        thinking_budget = 4000
+
         payload = {
             "contents": [
-                {"role": "user", "parts": [{"text": system_prompt + "\n\n" + user_prompt}]}
+                {
+                    "role": "user",
+                    "parts": [
+                        {
+                            "text": system_prompt + "\n\n" + user_prompt
+                        }
+                    ],
+                }
             ],
             "generationConfig": {
                 "temperature": self.config.temperature,
                 "maxOutputTokens": self.config.max_output_tokens,
+                "thinkingConfig": {
+                    "thinkingBudget": thinking_budget
+                },
             },
         }
+
         resp = self._requests.post(url, json=payload, timeout=self.config.timeout)
-        resp.raise_for_status()
+
+        try:
+            resp.raise_for_status()
+        except Exception as e:
+            raise RuntimeError(
+                f"Gemini HTTP error {resp.status_code}: {resp.text}"
+            ) from e
+
         data = resp.json()
-        return data["candidates"][0]["content"]["parts"][0]["text"]
+
+        # ---- Pull the first non-thought text part, if any ----
+        try:
+            candidates = data["candidates"]
+            if not candidates:
+                raise KeyError("no candidates")
+
+            content = candidates[0]["content"]
+            parts = content.get("parts", [])
+
+            for part in parts:
+                txt = part.get("text")
+                if not txt:
+                    continue
+                # If Google ever sets part["thought"] for summaries, skip them
+                if part.get("thought"):
+                    continue
+                return txt
+
+        except (KeyError, IndexError, TypeError):
+            # fall through to error below
+            pass
+
+        usage = data.get("usageMetadata", {})
+        raise RuntimeError(
+            "Gemini response contained no usable text.\n"
+            f"finishReason={data.get('candidates',[{}])[0].get('finishReason')}, "
+            f"promptTokenCount={usage.get('promptTokenCount')}, "
+            f"thoughtsTokenCount={usage.get('thoughtsTokenCount')}, "
+            f"totalTokenCount={usage.get('totalTokenCount')}.\n"
+            f"Raw response: {data}"
+        )
 

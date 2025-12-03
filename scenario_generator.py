@@ -15,16 +15,28 @@ from scenario_validator import validate_and_repair
 
 JSON_FENCE_RE = re.compile(r"```(?:json)?(.*?)```", re.DOTALL | re.IGNORECASE)
 
-
 def extract_json_block(text: str) -> str:
     """
-    Remove markdown fences or reasoning content, returning the JSON payload.
+    Try to extract the JSON object from an LLM response.
+
+    Strategy:
+      1) If there is a ```json ... ``` (or ``` ... ```) block, use its contents.
+      2) Otherwise, strip, then take everything between the first '{' and last '}'.
     """
+    # 1) Prefer fenced code block if present
     match = JSON_FENCE_RE.search(text)
     if match:
-        return match.group(1).strip()
-    return text.strip()
+        candidate = match.group(1).strip()
+    else:
+        candidate = text.strip()
 
+    # 2) Cut to the outermost JSON object
+    start = candidate.find("{")
+    end = candidate.rfind("}")
+    if start != -1 and end != -1 and end > start:
+        candidate = candidate[start : end + 1]
+
+    return candidate
 
 def load_prompts(prompt_arg: str | None, prompt_file: str | None) -> List[str]:
     if prompt_arg:
@@ -42,13 +54,13 @@ def scenario_to_dict(scenario) -> dict:
     data = asdict(scenario)
     return data
 
-
 def generate_scenario(prompt_text: str, args) -> Tuple[dict, dict, List[str]]:
+
     system_prompt = build_system_prompt()
-    user_prompt = build_user_prompt(
+    base_user_prompt = build_user_prompt(
         prompt_text,
         map_type=args.map_type,
-        human_count=args.humans,
+        human_count=None,  
         metadata_overrides={
             "scenario_id": args.scenario_id or "generated_temp",
             "seed": str(args.seed),
@@ -63,25 +75,53 @@ def generate_scenario(prompt_text: str, args) -> Tuple[dict, dict, List[str]]:
         max_output_tokens=args.max_tokens,
     )
     client = LLMClient(config)
-    
-    # Retry loop for JSON parsing
+
+    # Retry loop for JSON parsing, with feedback to the LLM
     last_err = None
+    user_prompt = base_user_prompt
+    parsed = None
+    raw_text = None
+
     for attempt in range(3):
+        print(f"LLM call attempt {attempt + 1}/3...")
         raw_text = client.generate(system_prompt, user_prompt)
         cleaned = extract_json_block(raw_text)
+
         try:
             parsed = json.loads(cleaned)
-            break
+            break  # success
         except json.JSONDecodeError as e:
             last_err = e
-            print(f"  JSON parse error (attempt {attempt+1}/3): {e}")
+            print(f"  JSON parse error (attempt {attempt + 1}/3): {e}")
+            print("  Cleaned candidate (first 400 chars):")
+            print(cleaned[:400])
+
             if attempt == 2:
-                print(f"  Raw LLM output:\n{raw_text[:500]}...")
-                raise RuntimeError(f"Failed to parse JSON after 3 attempts: {last_err}") from e
-    
+                print(f"  Raw LLM output (first 500 chars):\n{raw_text[:500]}...")
+                raise RuntimeError(
+                    f"Failed to parse JSON after 3 attempts: {last_err}"
+                ) from e
+
+            # Now explicitly ask the LLM to *repair* this JSON, not regenerate from scratch
+            feedback = (
+                "\n\nThe previous response was NOT valid JSON and could not be parsed.\n"
+                f"Error: {e}\n\n"
+                "Here is the invalid JSON you produced:\n"
+                "```json\n"
+                f"{cleaned[:2000]}\n"
+                "```\n\n"
+                "Please FIX this JSON so that it becomes valid and strictly follows the "
+                "scenario schema. Respond with ONLY the corrected JSON object. Do NOT "
+                "add explanations, comments, or text outside the JSON."
+            )
+            user_prompt = base_user_prompt + feedback
+
+
+    # At this point parsed must be valid JSON
     scenario = dict_to_scenario(parsed)
     scenario, logs = validate_and_repair(scenario)
     return parsed, scenario_to_dict(scenario), logs
+
 
 
 def simulate_scenario(scenario_dict: dict, visualize: bool = False) -> dict:
@@ -119,8 +159,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", help="Override model name for provider.")
     parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--max-tokens", type=int, default=1500)
-    parser.add_argument("--map-type", default="corridor")
-    parser.add_argument("--humans", type=int, help="Approximate human count.")
+    parser.add_argument("--map-type", default="auto")
     parser.add_argument("--scenario-id", help="Override scenario_id.")
     parser.add_argument("--model-name", default="llm-generated")
     parser.add_argument("--seed", type=int, default=42)

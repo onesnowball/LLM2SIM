@@ -7,18 +7,7 @@ from scenario_types import Scenario, AgentSpec
 
 
 def scenario_to_simulator(s: Scenario) -> CrowdSimulator:
-    """
-    Convert a validated Scenario into a configured CrowdSimulator.
 
-    Note: In the provided simulator, `reset()` still calls `set_circle_crossing()`,
-    which randomizes human positions. For Week 1, we primarily guarantee:
-      - correct number of humans,
-      - robot start/goal consistent with scenario,
-      - obstacles and groups registered.
-
-    Later, you can modify/reset behavior to use full JSON-specified geometry.
-    """
-    # Count humans
     humans = [a for a in s.agents if a.role == "human"]
     n_humans = len(humans)
 
@@ -29,7 +18,7 @@ def scenario_to_simulator(s: Scenario) -> CrowdSimulator:
         n_humans=n_humans,
         use_full_state=False,
     )
-
+    sim.randomize_humans = False
     # Find the robot (assume first robot is the one we control)
     robots = [a for a in s.agents if a.role == "robot"]
     if not robots:
