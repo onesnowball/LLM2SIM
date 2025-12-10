@@ -212,24 +212,6 @@ See `example_scenario_prompts.md` for detailed prompt engineering guide.
 
 **Fix**: Automatic geometric repair nudges agents away from walls.
 
-## Simulation Metrics
-
-After running a scenario, metrics include:
-
-### Robot-Specific
-- **Time to goal**: Steps taken
-- **Collision**: Boolean
-- **Path efficiency**: Actual path / straight-line distance
-- **Average speed**: Mean velocity
-- **Min human distance**: Closest approach to any human
-
-### Per-Agent
-- **Average acceleration**: Smoothness of motion
-- **Path efficiency**: Deviation from optimal path
-
-### Global
-- **Min inter-agent distance**: Closest any two agents came
-
 ## Model Comparison
 
 | Model | Quality | Speed | Cost | Use Case |
@@ -251,4 +233,3 @@ After running a scenario, metrics include:
 **Visualization fails**: Ensure matplotlib backend is configured (try `export MPLBACKEND=TkAgg`)
 
 
-```
