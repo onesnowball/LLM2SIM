@@ -1,6 +1,6 @@
 # ROB599 - LLM-Powered Crowd Simulation
 
-Generate realistic crowd navigation scenarios from natural language descriptions using LLMs (GPT-4.1/GPT-5), validate them with automatic quality scoring, and simulate them using a Social Force Model.
+Generate realistic crowd navigation scenarios from natural language descriptions using LLMs (GPT-4.1/GPT-5), validate them with automatic quality scoring.
 
 ## Overview
 
@@ -16,9 +16,6 @@ This project enables rapid creation of robot navigation datasets by:
 ### Prerequisites
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
-
 # Set your OpenAI API key
 export OPENAI_API_KEY="your-key-here"
 ```
@@ -79,72 +76,26 @@ Text Prompt → LLM → JSON → Validator → Refined JSON → Simulator → Me
 | **`visualize_scenario.py`** | Static visualization (t=0 only) |
 | **`analyze_scenario.py`** | Quality analysis tool |
 
-## Scenario Schema
-
-Scenarios are JSON files with this structure:
-
-```json
-{
-  "metadata": {
-    "scenario_id": "scenario_abc123",
-    "seed": 42,
-    "prompt_text": "Original prompt...",
-    "model_name": "gpt-4.1"
-  },
-  "map": {
-    "type": "corridor",
-    "bounds": [-12.0, -12.0, 12.0, 12.0],
-    "obstacles": [
-      {"p1": [-10, -2], "p2": [10, -2]},
-      {"p1": [-10, 2], "p2": [10, 2]}
-    ]
-  },
-  "agents": [
-    {
-      "id": 0,
-      "role": "robot",
-      "start": {"x": -8.0, "y": 0.0},
-      "goal": {"x": 8.0, "y": 0.0},
-      "radius": 0.3,
-      "v_pref": 1.0,
-      "behavior": "social_force",
-      "group_id": null
-    }
-  ],
-  "norms": {
-    "passing_side": "right",
-    "min_distance": 0.6
-  },
-  "sim": {
-    "dt": 0.1,
-    "max_steps": 600
-  },
-  "events": []
-}
-```
-
-See `scenario_schema.md` for complete specification.
-
 ## Quality Validation
 
 The validator performs automatic quality analysis with these components:
 
-### 1. Agent Placement (30% weight)
+### 1. Agent Placement
 - Agents must be ≥0.5m from walls
 - No overlapping start positions
 - Minimum 2m path length required
 
-### 2. Obstacle Quality (20% weight)
+### 2. Obstacle Quality
 - No degenerate walls (length < 0.01m)
 - Checks for fully enclosed rooms **without doorways** (major penalty)
 - Validates wall connectivity
 
-### 3. Reachability (30% weight)
+### 3. Reachability
 - **BFS pathfinding** verifies agents can reach goals
 - Checks clearance around obstacles
 - Detects trapped agents
 
-### 4. Spatial Distribution (20% weight)
+### 4. Spatial Distribution
 - Evaluates agent spread across environment
 - Penalizes clustering
 
@@ -170,13 +121,13 @@ python generate.py "simple corridor" --model gpt-4.1-nano
 
 ```bash
 # Require 85/100 quality score
-python batch_generate.py --min-score 85
+python batch_generate.py [# + description] --min-score 85
 ```
 
 ### Fast Mode (Skip BFS)
 
 ```bash
-# Skip expensive pathfinding checks (10x faster)
+# Skip pathfinding checks
 python batch_generate.py --fast
 ```
 
@@ -207,7 +158,7 @@ python run_scenario.py scenarios/generated/scenario_abc123.json --visualize
 
 ## Writing Better Prompts
 
-### Good Prompt Structure
+### Good Prompt Structure For Individual Scenario Generation
 
 ```
 [Environment description] + [Specific geometry] + [Agent behaviors]
@@ -236,21 +187,6 @@ coming from the perpendicular direction at the corner"
 (Too vague—no geometry, positions, or interaction specified)
 
 See `example_scenario_prompts.md` for detailed prompt engineering guide.
-
-## Iterative Refinement
-
-The generator automatically refines scenarios:
-
-1. **Iteration 1**: Generate from original prompt
-2. **Quality Check**: Run BFS pathfinding & geometric validation
-3. **Iteration 2**: If score < threshold, provide feedback to LLM with specific issues
-4. **Iteration 3**: Final refinement attempt
-5. **Return**: Best scoring scenario
-
-Typical workflow:
-- **Iteration 1**: Raw LLM output (often 50-70/100)
-- **Iteration 2**: Fixes reachability issues (70-80/100)
-- **Iteration 3**: Fine-tuning (80-90/100)
 
 ## Common Issues
 
@@ -303,25 +239,6 @@ After running a scenario, metrics include:
 | **gpt-4.1-mini** | ⭐⭐⭐ | Fast | Low | Rapid prototyping |
 | **gpt-4.1-nano** | ⭐⭐ | Very Fast | Very Low | Testing |
 
-## Dataset Statistics
-
-Track your generation runs:
-
-```bash
-# After batch generation, check outputs
-ls scenarios/generated/ | wc -l
-
-# View quality distribution
-python analyze_scenario.py scenarios/generated/*.json
-```
-
-## Contributing
-
-When adding scenarios:
-1. Follow the schema in `scenario_schema.md`
-2. Ensure quality score ≥75
-3. Test with `run_scenario.py` before committing
-4. Add to appropriate dataset folder
 
 ## Troubleshooting
 
