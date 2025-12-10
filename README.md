@@ -333,11 +333,7 @@ When adding scenarios:
 
 **Visualization fails**: Ensure matplotlib backend is configured (try `export MPLBACKEND=TkAgg`)
 
-## Citation
 
-If you use this code, please cite:
-```
-[Your paper/project citation here]
 ```
 
 ## License
