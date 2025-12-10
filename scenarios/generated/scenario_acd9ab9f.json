@@ -1,0 +1,257 @@
+{
+  "metadata": {
+    "scenario_id": "scenario_acd9ab9f",
+    "seed": 42,
+    "prompt_text": "USER PROMPT: \"\nITERATION 3 - REFINEMENT NEEDED\n\nPrevious attempt had quality issues (Score: 72.0/100).\n\nPROBLEMS IDENTIFIED:\n  - Found 6 isolated wall endpoints\n  - Agent 0 CANNOT reach goal - no valid path exists!\n  - Agent 1 CANNOT reach goal - no valid path exists!\n  - Agent 2 CANNOT reach goal - no valid path exists!\n\nCOMPONENT SCORES:\n  - Agent Placement: 100.0/100\n  - Obstacle Quality: 95.0/100\n  - Reachability: 10.0/100\n  - Spatial Distribution: 100.0/100\n\nCRITICAL FIXES NEEDED:\n\n  1. REACHABILITY ISSUES - MOST CRITICAL:\n     - Some agents CANNOT reach their goals\n     - Verify all rooms are connected with doorways (\u22651.0m wide)\n     - Check that walls don't completely block paths\n     - Each agent needs a continuous path from start to goal\n\n\nORIGINAL REQUEST:\noffice with 3 connected rooms. 1 robot, 2 humans all start in separate rooms. rooms should not be directly connected to each other. goals should be in a room which agent did not start inside of\n\nNOW REGENERATE THE SCENARIO:\n- Fix ALL problems listed above\n- Ensure EVERY agent can reach their goal\n- Verify wall segments connect properly\n- Place agents in valid free space\n\nGenerate the corrected JSON now.\n\"\n\n        REQUIREMENTS:\n          - Choose map.type as a descriptive string matching the environment (e.g., 'corridor', 'intersection', 'plaza', 'l_corridor', 'two_rooms_with_door'). with bounds [-12.0, -12.0, 12.0, 12.0]\n          - Create one human for each distinct person in the prompt. If the prompt is vague (e.g., 'busy crowd'), use 3-5 humans.\n          - metadata: scenario_id=\"scenario_acd9ab9f\", seed=42, model_name=\"gpt-4o\"\n          - metadata.prompt_text MUST exactly match the user prompt above\n          - Use map.obstacles to construct all geometry (walls, rooms, doorways) from line segments\n          - Ensure events is an empty array [] unless specific events are described\n\n        CRITICAL INSTRUCTIONS:\n          1. First, mentally sketch where each region (corridor, room, etc.) will be located\n          2. Build walls segment by segment, connecting them precisely\n          3. Place agents in free space, away from walls, with clear paths to their goals\n          4. Double-check: Can each agent reach its goal? Are coordinates sensible?\n\n        OUTPUT: Raw JSON only. No markdown fences, no explanations."
+  },
+  "map": {
+    "type": "three_connected_rooms",
+    "bounds": [
+      -12.0,
+      -12.0,
+      12.0,
+      12.0
+    ],
+    "obstacles": [
+      [
+        [
+          -10.0,
+          -10.0
+        ],
+        [
+          -10.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          -5.0
+        ],
+        [
+          -5.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          -5.0
+        ],
+        [
+          -5.0,
+          -10.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          -10.0
+        ],
+        [
+          -10.0,
+          -10.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          -10.0
+        ],
+        [
+          -5.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          -5.0
+        ],
+        [
+          0.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          -5.0
+        ],
+        [
+          0.0,
+          -10.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          -10.0
+        ],
+        [
+          -5.0,
+          -10.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          -5.0
+        ],
+        [
+          5.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          -5.0
+        ],
+        [
+          5.0,
+          -10.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          -10.0
+        ],
+        [
+          0.0,
+          -10.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          -5.0
+        ],
+        [
+          -10.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          0.0
+        ],
+        [
+          -5.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          0.0
+        ],
+        [
+          -5.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          5.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          0.0
+        ],
+        [
+          5.0,
+          -5.0
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -8.0,
+        -8.0
+      ],
+      "goal": [
+        3.0,
+        -3.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        -3.0,
+        -3.0
+      ],
+      "goal": [
+        -8.0,
+        -8.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        3.0,
+        -8.0
+      ],
+      "goal": [
+        -3.0,
+        -3.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 600
+  },
+  "events": []
+}

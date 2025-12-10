@@ -1,0 +1,254 @@
+{
+  "metadata": {
+    "scenario_id": "scenario_e308a970",
+    "seed": 62,
+    "prompt_text": "USER PROMPT: \"\nITERATION 3 - REFINEMENT NEEDED\n\nScore: 46.5/100 (target: 75.0+)\n\nCRITICAL ISSUES:\n  - Agent 1 start too close to wall (0.25m, need 0.60m)\n  - Agents 0 and 3 have overlapping starts\n  - \ud83d\udea8 FULLY ENCLOSED BOX DETECTED at approx center (0.0, 4.5)! This region has NO doorway and will TRAP agents inside. You MUST add a doorway by removing part of one wall.\n  - Agent 0 CANNOT reach goal - no valid path exists!\n  - Agent 1 CANNOT reach goal - no valid path exists!\n\nORIGINAL REQUEST: scenarios of robot navigating through various environments in corporate settings\n\nGenerate CORRECTED JSON (raw JSON only, no markdown):\n\"\n\n        REQUIREMENTS:\n          - Choose map.type as a descriptive string matching the environment (e.g., 'corridor', 'intersection', 'plaza', 'l_corridor', 'three_rooms_with_hallway'). with bounds [-12.0, -12.0, 12.0, 12.0]\n          - Create one human for each distinct person in the prompt. If the prompt is vague (e.g., 'busy crowd'), use 3-5 humans.\n          - metadata: scenario_id=\"scenario_e308a970\", seed=62, model_name=\"gpt-4.1\"\n          - metadata.prompt_text MUST exactly match the user prompt above\n          - Use map.obstacles to construct all geometry (walls, rooms, doorways) from line segments\n          - Ensure events is an empty array [] unless specific events are described\n\n        \ud83d\udea8 CRITICAL INSTRUCTIONS - READ CAREFULLY:\n\n          1. BEFORE creating any walls, plan the layout mentally\n          2. Identify all regions that will be enclosed (rooms, cells, etc.)\n          3. FOR EACH ENCLOSED REGION: Plan where the doorway will be\n          4. Build walls segment by segment, leaving gaps for doorways\n          5. Place agents in free space, away from walls, with clear paths to goals\n\n          6. **FINAL CHECK BEFORE RESPONDING:**\n             - Count walls around each region\n             - If any region has 4 walls with NO gaps \u2192 ADD A DOORWAY NOW\n             - Verify: Can I walk from every agent's start to their goal?\n             - Verify: Are all doorways at least 1.0m wide?\n\n        COMMON MISTAKES TO AVOID:\n          \u274c Creating a rectangle with 4 walls and no doorway\n          \u274c Making doorways too narrow (<1.0m)\n          \u274c Placing agents inside enclosed boxes\n          \u274c Forgetting to leave gaps between wall segments\n\n        CORRECT APPROACH:\n          \u2713 Plan doorway locations BEFORE creating walls\n          \u2713 Split one wall into two segments with a gap\n          \u2713 Verify connectivity with BFS pathfinding mentally\n          \u2713 Place agents well inside open spaces\n\n        OUTPUT: Raw JSON only. No markdown fences, no explanations.",
+    "model_name": "gpt-4.1"
+  },
+  "map": {
+    "type": "three_rooms_with_hallway",
+    "bounds": [
+      -12.0,
+      -12.0,
+      12.0,
+      12.0
+    ],
+    "obstacles": [
+      [
+        [
+          -10.0,
+          -2.0
+        ],
+        [
+          -2.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          -2.0,
+          -2.0
+        ],
+        [
+          -2.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -2.0,
+          2.0
+        ],
+        [
+          -10.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          2.0
+        ],
+        [
+          -10.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          -2.0
+        ],
+        [
+          10.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          10.0,
+          -2.0
+        ],
+        [
+          10.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          10.0,
+          2.0
+        ],
+        [
+          2.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          2.0
+        ],
+        [
+          2.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          -4.0,
+          3.0
+        ],
+        [
+          -4.0,
+          10.0
+        ]
+      ],
+      [
+        [
+          -4.0,
+          10.0
+        ],
+        [
+          4.0,
+          10.0
+        ]
+      ],
+      [
+        [
+          4.0,
+          10.0
+        ],
+        [
+          4.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          -4.0,
+          3.0
+        ],
+        [
+          -1.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          1.0,
+          3.0
+        ],
+        [
+          4.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          -2.0,
+          2.0
+        ],
+        [
+          -2.0,
+          6.0
+        ]
+      ],
+      [
+        [
+          -2.0,
+          6.0
+        ],
+        [
+          2.0,
+          6.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          6.0
+        ],
+        [
+          2.0,
+          2.0
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -8.0,
+        0.0
+      ],
+      "goal": [
+        0.0,
+        8.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.1,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        8.0,
+        0.0
+      ],
+      "goal": [
+        0.0,
+        8.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.2,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        0.0,
+        8.5
+      ],
+      "goal": [
+        -8.0,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": [
+        0.0,
+        5.0
+      ],
+      "goal": [
+        8.0,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 600
+  },
+  "events": []
+}

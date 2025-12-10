@@ -1,0 +1,15 @@
+A robot walking down a narrow corridor while two humans approach side-by-side from the opposite direction.
+A robot overtaking a slower human in a wide corridor with enough space to pass comfortably.
+A robot and three humans crossing at a four-way intersection from different directions.
+A robot entering a busy plaza where humans move radially outward from a central point.
+A robot merging into the flow of humans exiting a lecture hall through a doorway.
+A robot trying to pass between two humans chatting in the middle of a corridor.
+A robot following a single human in a corridor at a comfortable distance without overtaking.
+A robot navigating a T-shaped intersection where two human flows merge.
+A robot crossing behind a group of three humans walking side-by-side in a plaza.
+A robot entering a corridor from a side door while a human approaches from the main corridor.
+A robot and a human walking in the same direction, with the robot constrained to keep at least 0.8 m distance.
+Two robots moving in opposite directions in a corridor while avoiding two human bystanders near the walls.
+A robot navigating around a static obstacle (pillar) in a plaza while humans pass both left and right.
+A robot trying to pass a slow pair of humans walking side-by-side in a corridor just wide enough for two abreast.
+A robot entering a crowded intersection where humans occasionally pause and create local bottlenecks.

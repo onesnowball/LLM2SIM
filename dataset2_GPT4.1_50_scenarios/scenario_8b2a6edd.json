@@ -1,0 +1,374 @@
+{
+  "metadata": {
+    "scenario_id": "scenario_8b2a6edd",
+    "seed": 57,
+    "prompt_text": "\nITERATION 3 - REFINEMENT NEEDED\n\nScore: 44.0/100 (target: 75.0+)\n\nCRITICAL ISSUES:\n  - Found 6 isolated wall endpoints\n  - \ud83d\udea8 FULLY ENCLOSED BOX DETECTED at approx center (0.0, 0.0)! This region has NO doorway and will TRAP agents inside. You MUST add a doorway by removing part of one wall.\n  - \ud83d\udea8 FULLY ENCLOSED BOX DETECTED at approx center (6.5, 0.0)! This region has NO doorway and will TRAP agents inside. You MUST add a doorway by removing part of one wall.\n  - Agent 0 CANNOT reach goal - no valid path exists!\n  - Agent 1 CANNOT reach goal - no valid path exists!\n\nORIGINAL REQUEST: scenarios of robot navigating through various environments in corporate settings\n\nGenerate CORRECTED JSON (raw JSON only, no markdown):\n",
+    "model_name": "gpt-4.1"
+  },
+  "map": {
+    "type": "office_rooms_with_corridor",
+    "bounds": [
+      -12.0,
+      -12.0,
+      12.0,
+      12.0
+    ],
+    "obstacles": [
+      [
+        [
+          -10.0,
+          -2.0
+        ],
+        [
+          10.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          10.0,
+          -2.0
+        ],
+        [
+          10.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          2.0
+        ],
+        [
+          10.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          -2.0
+        ],
+        [
+          -10.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          2.0
+        ],
+        [
+          -8.0,
+          7.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          7.0
+        ],
+        [
+          -3.0,
+          7.0
+        ]
+      ],
+      [
+        [
+          -3.0,
+          7.0
+        ],
+        [
+          -3.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          2.0
+        ],
+        [
+          -3.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          2.0
+        ],
+        [
+          -5.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          -3.0,
+          2.0
+        ],
+        [
+          -5.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          2.0
+        ],
+        [
+          3.0,
+          7.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          7.0
+        ],
+        [
+          8.0,
+          7.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          7.0
+        ],
+        [
+          8.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          2.0
+        ],
+        [
+          8.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          2.0
+        ],
+        [
+          8.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          2.0
+        ],
+        [
+          5.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          -2.0
+        ],
+        [
+          -8.0,
+          -7.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          -7.0
+        ],
+        [
+          -3.0,
+          -7.0
+        ]
+      ],
+      [
+        [
+          -3.0,
+          -7.0
+        ],
+        [
+          -3.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          -2.0
+        ],
+        [
+          -3.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          -2.0
+        ],
+        [
+          -3.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          -2.0
+        ],
+        [
+          -5.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          -2.0
+        ],
+        [
+          3.0,
+          -7.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          -7.0
+        ],
+        [
+          8.0,
+          -7.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          -7.0
+        ],
+        [
+          8.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          -2.0
+        ],
+        [
+          8.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          -2.0
+        ],
+        [
+          8.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          -2.0
+        ],
+        [
+          5.0,
+          -2.0
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -9.0,
+        0.0
+      ],
+      "goal": [
+        9.0,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        -6.5,
+        5.0
+      ],
+      "goal": [
+        6.5,
+        -5.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        6.5,
+        5.0
+      ],
+      "goal": [
+        -6.5,
+        -5.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.1,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": [
+        -6.5,
+        -5.0
+      ],
+      "goal": [
+        6.5,
+        5.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.2,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 600
+  },
+  "events": []
+}

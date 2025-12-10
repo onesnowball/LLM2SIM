@@ -1,0 +1,250 @@
+{
+  "metadata": {
+    "scenario_id": "scenario_6c19d98b",
+    "seed": 182,
+    "prompt_text": "scenarios of robot navigating through various environments in corporate settings",
+    "model_name": "gpt-5"
+  },
+  "map": {
+    "type": "three_rooms_with_hallway",
+    "bounds": [
+      -12.0,
+      -12.0,
+      12.0,
+      12.0
+    ],
+    "obstacles": [
+      [
+        [
+          -10.0,
+          1.5
+        ],
+        [
+          -7.5,
+          1.5
+        ]
+      ],
+      [
+        [
+          -6.0,
+          1.5
+        ],
+        [
+          2.0,
+          1.5
+        ]
+      ],
+      [
+        [
+          3.5,
+          1.5
+        ],
+        [
+          10.0,
+          1.5
+        ]
+      ],
+      [
+        [
+          -10.0,
+          -1.5
+        ],
+        [
+          -2.0,
+          -1.5
+        ]
+      ],
+      [
+        [
+          -0.5,
+          -1.5
+        ],
+        [
+          10.0,
+          -1.5
+        ]
+      ],
+      [
+        [
+          -10.0,
+          1.5
+        ],
+        [
+          -10.0,
+          6.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          6.0
+        ],
+        [
+          -4.0,
+          6.0
+        ]
+      ],
+      [
+        [
+          -4.0,
+          6.0
+        ],
+        [
+          -4.0,
+          1.5
+        ]
+      ],
+      [
+        [
+          0.0,
+          1.5
+        ],
+        [
+          0.0,
+          7.5
+        ]
+      ],
+      [
+        [
+          0.0,
+          7.5
+        ],
+        [
+          6.0,
+          7.5
+        ]
+      ],
+      [
+        [
+          6.0,
+          7.5
+        ],
+        [
+          6.0,
+          1.5
+        ]
+      ],
+      [
+        [
+          -5.0,
+          -1.5
+        ],
+        [
+          -5.0,
+          -7.5
+        ]
+      ],
+      [
+        [
+          -5.0,
+          -7.5
+        ],
+        [
+          1.0,
+          -7.5
+        ]
+      ],
+      [
+        [
+          1.0,
+          -7.5
+        ],
+        [
+          1.0,
+          -1.5
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -9.0,
+        0.0
+      ],
+      "goal": [
+        9.0,
+        0.8
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        -7.0,
+        4.0
+      ],
+      "goal": [
+        -8.0,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        3.0,
+        5.5
+      ],
+      "goal": [
+        4.5,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": [
+        -2.5,
+        -5.0
+      ],
+      "goal": [
+        -8.5,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.2,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 4,
+      "role": "human",
+      "start": [
+        0.0,
+        -0.7
+      ],
+      "goal": [
+        4.0,
+        6.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.2,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 700
+  },
+  "events": []
+}

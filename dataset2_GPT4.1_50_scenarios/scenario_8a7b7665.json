@@ -1,0 +1,290 @@
+{
+  "metadata": {
+    "scenario_id": "scenario_8a7b7665",
+    "seed": 63,
+    "prompt_text": "scenarios of robot navigating through various environments in corporate settings",
+    "model_name": "gpt-4.1"
+  },
+  "map": {
+    "type": "three_rooms_with_hallway",
+    "bounds": [
+      -12.0,
+      -12.0,
+      12.0,
+      12.0
+    ],
+    "obstacles": [
+      [
+        [
+          -8.0,
+          -3.0
+        ],
+        [
+          -8.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          3.0
+        ],
+        [
+          -3.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          -3.0,
+          3.0
+        ],
+        [
+          -3.0,
+          1.5
+        ]
+      ],
+      [
+        [
+          -3.0,
+          -1.5
+        ],
+        [
+          -3.0,
+          -3.0
+        ]
+      ],
+      [
+        [
+          -3.0,
+          -3.0
+        ],
+        [
+          -8.0,
+          -3.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          -3.0
+        ],
+        [
+          3.0,
+          1.5
+        ]
+      ],
+      [
+        [
+          3.0,
+          3.0
+        ],
+        [
+          8.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          3.0
+        ],
+        [
+          8.0,
+          -3.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          -3.0
+        ],
+        [
+          3.0,
+          -3.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          -1.5
+        ],
+        [
+          3.0,
+          -3.0
+        ]
+      ],
+      [
+        [
+          -3.0,
+          8.0
+        ],
+        [
+          3.0,
+          8.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          8.0
+        ],
+        [
+          3.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          3.0,
+          3.0
+        ],
+        [
+          1.5,
+          3.0
+        ]
+      ],
+      [
+        [
+          -1.5,
+          3.0
+        ],
+        [
+          -3.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          -3.0,
+          3.0
+        ],
+        [
+          -3.0,
+          8.0
+        ]
+      ],
+      [
+        [
+          -3.0,
+          1.5
+        ],
+        [
+          3.0,
+          1.5
+        ]
+      ],
+      [
+        [
+          3.0,
+          -1.5
+        ],
+        [
+          -3.0,
+          -1.5
+        ]
+      ],
+      [
+        [
+          1.5,
+          3.0
+        ],
+        [
+          -1.5,
+          3.0
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -6.5,
+        0.0
+      ],
+      "goal": [
+        6.5,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        -6.5,
+        2.0
+      ],
+      "goal": [
+        -0.5,
+        6.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        0.5,
+        6.5
+      ],
+      "goal": [
+        6.5,
+        2.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": [
+        6.5,
+        -2.0
+      ],
+      "goal": [
+        -6.5,
+        -2.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.2,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 4,
+      "role": "human",
+      "start": [
+        -0.5,
+        -6.5
+      ],
+      "goal": [
+        0.5,
+        6.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 600
+  },
+  "events": []
+}

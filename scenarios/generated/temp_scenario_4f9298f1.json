@@ -1,0 +1,254 @@
+{
+  "metadata": {
+    "scenario_id": "scenario_4f9298f1",
+    "seed": 42,
+    "prompt_text": "\nITERATION 3 - REFINEMENT NEEDED\n\nYour previous attempt had quality issues (Score: 78.0/100).\n\nPROBLEMS IDENTIFIED:\n  - Found 6 isolated wall endpoints. Consider connecting walls for more coherent structure.\n  - Agent 0 CANNOT reach its goal - no valid path exists even with obstacle avoidance!\n  - Agent 1 must navigate around obstacles to reach goal (path exists but not straight-line).\n  - Agent 2 CANNOT reach its goal - no valid path exists even with obstacle avoidance!\n  - Agent 3 must navigate around obstacles to reach goal (path exists but not straight-line).\n\nCOMPONENT SCORES:\n  - Agent Placement: 100.0/100\n  - Obstacle Quality: 95.0/100\n  - Reachability: 40.0/100\n  - Spatial Distribution: 85.0/100\n\nCRITICAL FIXES NEEDED:\n\n  1. REACHABILITY ISSUES - MOST CRITICAL:\n     - Some agents CANNOT reach their goals\n     - Check that all rooms/areas are connected with doorways\n     - Doorways must be at least 1.0m wide\n     - Verify walls don't completely block paths\n     - Each agent needs a continuous path from start to goal\n     - Don't place goals behind walls with no openings\n\n\nORIGINAL REQUEST:\nCreate an office suite with 3 connected rooms:\n- Room 1 (lobby): x=[0,5], y=[0,5], door on right wall at y=2.5, width 1.2m\n- Room 2 (hallway): x=[5,12], y=[0,5], connects rooms 1 and 3\n- Room 3 (conference): x=[5,12], y=[5,10], door on bottom wall at x=8.5, width 1.5m\n- Walls fully enclose each room except for doorways\nRobot starts in room 1 at (2,2), goal in room 3 at (8,7)\nHuman 1 in room 3 at (9,7), going to room 1 at (2,3)\nHuman 2 in hallway at (8,2), going to room 3 at (10,7)\nHuman 3 in room 1 at (3,4), goal in hallway at (9,2)\nThis creates doorway congestion and multi-room navigation\n\nNOW REGENERATE THE SCENARIO:\n- Fix ALL the problems listed above\n- Pay special attention to reachability - ensure EVERY agent can reach their goal\n- If creating rooms, explicitly define doorway openings with precise coordinates\n- Double-check that wall segments connect properly\n- Verify agent positions are in valid free space\n\nGenerate the corrected JSON now.\n",
+    "model_name": "gpt-4.1"
+  },
+  "map": {
+    "type": "three_rooms_office_suite",
+    "bounds": [
+      -12.0,
+      -12.0,
+      12.0,
+      12.0
+    ],
+    "obstacles": [
+      [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          5.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          5.0
+        ],
+        [
+          5.0,
+          5.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          5.0
+        ],
+        [
+          5.0,
+          3.1
+        ]
+      ],
+      [
+        [
+          5.0,
+          1.9
+        ],
+        [
+          5.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      [
+        [
+          12.0,
+          0.0
+        ],
+        [
+          12.0,
+          5.0
+        ]
+      ],
+      [
+        [
+          12.0,
+          5.0
+        ],
+        [
+          5.0,
+          5.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          5.0
+        ],
+        [
+          5.0,
+          10.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          10.0
+        ],
+        [
+          12.0,
+          10.0
+        ]
+      ],
+      [
+        [
+          12.0,
+          10.0
+        ],
+        [
+          12.0,
+          6.75
+        ]
+      ],
+      [
+        [
+          12.0,
+          6.75
+        ],
+        [
+          10.25,
+          6.75
+        ]
+      ],
+      [
+        [
+          9.0,
+          6.75
+        ],
+        [
+          5.0,
+          6.75
+        ]
+      ],
+      [
+        [
+          5.0,
+          6.75
+        ],
+        [
+          5.0,
+          10.0
+        ]
+      ],
+      [
+        [
+          9.0,
+          5.0
+        ],
+        [
+          5.0,
+          5.0
+        ]
+      ],
+      [
+        [
+          10.25,
+          5.0
+        ],
+        [
+          12.0,
+          5.0
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        2.0,
+        2.0
+      ],
+      "goal": [
+        -3.953618924501911,
+        -5.000784357406933
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        7.753047008076036,
+        5.637631203413095
+      ],
+      "goal": [
+        3.7579169492501503,
+        -4.77065548138221
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        8.0,
+        2.0
+      ],
+      "goal": [
+        0.6536192119095325,
+        -3.533476360706853
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": [
+        3.0,
+        4.0
+      ],
+      "goal": [
+        9.0,
+        2.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 600
+  },
+  "events": []
+}

@@ -1,0 +1,264 @@
+{
+  "metadata": {
+    "scenario_id": "scenario_84ac181a",
+    "seed": 61,
+    "prompt_text": "\nITERATION 2 - REFINEMENT NEEDED\n\nScore: 63.0/100 (target: 75.0+)\n\nCRITICAL ISSUES:\n  - Agent 2 goal too close to wall (0.50m, need 0.60m)\n  - Agent 3 goal too close to wall (0.50m, need 0.60m)\n  - \ud83d\udea8 FULLY ENCLOSED BOX DETECTED at approx center (0.0, 0.0)! This region has NO doorway and will TRAP agents inside. You MUST add a doorway by removing part of one wall.\n  - Agent 2 CANNOT reach goal - no valid path exists!\n  - Agent 3 CANNOT reach goal - no valid path exists!\n\nORIGINAL REQUEST: scenarios of robot navigating through various environments in corporate settings\n\nGenerate CORRECTED JSON (raw JSON only, no markdown):\n",
+    "model_name": "gpt-4.1"
+  },
+  "map": {
+    "type": "central_office_room_with_doorway",
+    "bounds": [
+      -12.0,
+      -12.0,
+      12.0,
+      12.0
+    ],
+    "obstacles": [
+      [
+        [
+          -4.0,
+          -3.0
+        ],
+        [
+          -4.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          -4.0,
+          3.0
+        ],
+        [
+          4.0,
+          3.0
+        ]
+      ],
+      [
+        [
+          4.0,
+          3.0
+        ],
+        [
+          4.0,
+          -3.0
+        ]
+      ],
+      [
+        [
+          4.0,
+          -3.0
+        ],
+        [
+          1.1,
+          -3.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          -3.0
+        ],
+        [
+          -4.0,
+          -3.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          -1.0
+        ],
+        [
+          8.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          1.0
+        ],
+        [
+          10.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          10.0,
+          1.0
+        ],
+        [
+          10.0,
+          -1.0
+        ]
+      ],
+      [
+        [
+          10.0,
+          -1.0
+        ],
+        [
+          8.0,
+          -1.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          -1.0
+        ],
+        [
+          -10.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          -10.0,
+          1.0
+        ],
+        [
+          -8.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          1.0
+        ],
+        [
+          -8.0,
+          -1.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          -1.0
+        ],
+        [
+          -10.0,
+          -1.0
+        ]
+      ],
+      [
+        [
+          -7.0,
+          4.5
+        ],
+        [
+          7.0,
+          4.5
+        ]
+      ],
+      [
+        [
+          7.0,
+          4.5
+        ],
+        [
+          7.0,
+          7.0
+        ]
+      ],
+      [
+        [
+          7.0,
+          7.0
+        ],
+        [
+          -7.0,
+          7.0
+        ]
+      ],
+      [
+        [
+          -7.0,
+          7.0
+        ],
+        [
+          -7.0,
+          4.5
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -6.5,
+        0.0
+      ],
+      "goal": [
+        6.5,
+        0.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        0.0,
+        1.2
+      ],
+      "goal": [
+        0.0,
+        -2.1
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        -2.5,
+        -1.2
+      ],
+      "goal": [
+        3.0,
+        2.2
+      ],
+      "radius": 0.3,
+      "v_pref": 1.2,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": [
+        2.6,
+        -2.1
+      ],
+      "goal": [
+        -3.2,
+        2.2
+      ],
+      "radius": 0.3,
+      "v_pref": 1.4,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 600
+  },
+  "events": []
+}

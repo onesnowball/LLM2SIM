@@ -1,0 +1,304 @@
+{
+  "metadata": {
+    "scenario_id": "nb_demo_01",
+    "seed": 42,
+    "prompt_text": "A busy diagonal crosswalk in a city plaza with two wide pedestrian streams crossing at 45 degreesand one robot weaving through them toward a goal in the opposite corner.Narrow L-shaped corridor with a blind 90-degree turn, where a single robot and several pedestriansapproach the corner from both legs of the L.",
+    "model_name": "openai-gpt-4.1"
+  },
+  "map": {
+    "type": "plaza_diagonal_crosswalk_and_l_shaped_corridor",
+    "bounds": [
+      -8.0,
+      -8.0,
+      8.0,
+      8.0
+    ],
+    "obstacles": [
+      [
+        [
+          -8.0,
+          -2.0
+        ],
+        [
+          -2.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          -2.0,
+          -2.0
+        ],
+        [
+          -2.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -2.0,
+          2.0
+        ],
+        [
+          2.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          2.0
+        ],
+        [
+          2.0,
+          8.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          8.0
+        ],
+        [
+          4.0,
+          8.0
+        ]
+      ],
+      [
+        [
+          4.0,
+          8.0
+        ],
+        [
+          4.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          4.0,
+          2.0
+        ],
+        [
+          8.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          2.0
+        ],
+        [
+          8.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          -2.0
+        ],
+        [
+          4.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          4.0,
+          -2.0
+        ],
+        [
+          4.0,
+          -8.0
+        ]
+      ],
+      [
+        [
+          4.0,
+          -8.0
+        ],
+        [
+          2.0,
+          -8.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          -8.0
+        ],
+        [
+          2.0,
+          -2.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          -2.0
+        ],
+        [
+          -8.0,
+          -2.0
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -6.5,
+        -1.549
+      ],
+      "goal": [
+        1.5,
+        2.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        -6.0,
+        -1.549
+      ],
+      "goal": [
+        1.5,
+        2.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 1
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        -5.5,
+        -1.549
+      ],
+      "goal": [
+        1.5,
+        2.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 1
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": [
+        6.0,
+        1.549
+      ],
+      "goal": [
+        -1.5,
+        -1.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 2
+    },
+    {
+      "id": 4,
+      "role": "human",
+      "start": [
+        5.5,
+        1.549
+      ],
+      "goal": [
+        -1.5,
+        -1.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 2
+    },
+    {
+      "id": 5,
+      "role": "human",
+      "start": [
+        -7.0,
+        0.0
+      ],
+      "goal": [
+        -0.09999999999999964,
+        2.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 3
+    },
+    {
+      "id": 6,
+      "role": "human",
+      "start": [
+        0.0,
+        1.549
+      ],
+      "goal": [
+        -1.5,
+        0.09999999999999964
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 3
+    },
+    {
+      "id": 7,
+      "role": "human",
+      "start": [
+        -7.5,
+        -1.0
+      ],
+      "goal": [
+        0.9000000000000004,
+        2.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 4
+    },
+    {
+      "id": 8,
+      "role": "human",
+      "start": [
+        1.0,
+        1.549
+      ],
+      "goal": [
+        -1.5,
+        -0.8999999999999995
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 4
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 800
+  },
+  "events": []
+}

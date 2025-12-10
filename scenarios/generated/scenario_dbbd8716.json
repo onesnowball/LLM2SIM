@@ -1,0 +1,268 @@
+{
+  "metadata": {
+    "scenario_id": "scenario_dbbd8716",
+    "seed": 42,
+    "prompt_text": "\nITERATION 2 - REFINEMENT NEEDED\n\nPrevious attempt had quality issues (Score: 62.0/100).\n\nPROBLEMS IDENTIFIED:\n  - Agent 1 goal too close to wall (0.50m, need 0.60m)\n  - Agent 2 start too close to wall (0.50m, need 0.60m)\n  - Obstacle 4 is degenerate (length 0.000m)\n  - Found 8 isolated wall endpoints\n  - Agent 0 CANNOT reach goal - no valid path exists!\n  - Agent 1 CANNOT reach goal - no valid path exists!\n  - Agent 2 CANNOT reach goal - no valid path exists!\n\nCOMPONENT SCORES:\n  - Agent Placement: 70.0/100\n  - Obstacle Quality: 90.0/100\n  - Reachability: 10.0/100\n  - Spatial Distribution: 100.0/100\n\nCRITICAL FIXES NEEDED:\n\n  1. REACHABILITY ISSUES - MOST CRITICAL:\n     - Some agents CANNOT reach their goals\n     - Verify all rooms are connected with doorways (\u22651.0m wide)\n     - Check that walls don't completely block paths\n     - Each agent needs a continuous path from start to goal\n\n  2. AGENT PLACEMENT ISSUES:\n     - Agents too close to walls (need radius + 0.3m clearance)\n     - Don't place agents in doorways or corners\n\n\nORIGINAL REQUEST:\noffice with 3 connected rooms. 1 robot, 2 humans all start in separate rooms. rooms should not be directly connected to each other. goals should be in a room which agent did not start inside of\n\nNOW REGENERATE THE SCENARIO:\n- Fix ALL problems listed above\n- Ensure EVERY agent can reach their goal\n- Verify wall segments connect properly\n- Place agents in valid free space\n\nGenerate the corrected JSON now.\n",
+    "model_name": "gpt-4.1"
+  },
+  "map": {
+    "type": "three_rooms_with_hallway_connections",
+    "bounds": [
+      -12.0,
+      -12.0,
+      12.0,
+      12.0
+    ],
+    "obstacles": [
+      [
+        [
+          -8.0,
+          2.0
+        ],
+        [
+          -8.0,
+          8.0
+        ]
+      ],
+      [
+        [
+          -8.0,
+          8.0
+        ],
+        [
+          -2.0,
+          8.0
+        ]
+      ],
+      [
+        [
+          -2.0,
+          8.0
+        ],
+        [
+          -2.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -2.0,
+          2.0
+        ],
+        [
+          -8.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          2.0
+        ],
+        [
+          -5.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          -5.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          2.0
+        ],
+        [
+          -2.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          0.0,
+          2.0
+        ],
+        [
+          2.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          2.0
+        ],
+        [
+          2.0,
+          8.0
+        ]
+      ],
+      [
+        [
+          2.0,
+          8.0
+        ],
+        [
+          8.0,
+          8.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          8.0
+        ],
+        [
+          8.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          8.0,
+          2.0
+        ],
+        [
+          2.0,
+          2.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          2.0
+        ],
+        [
+          5.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          5.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          -1.0,
+          1.0
+        ],
+        [
+          -1.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          -1.0,
+          -5.0
+        ],
+        [
+          1.0,
+          -5.0
+        ]
+      ],
+      [
+        [
+          1.0,
+          -5.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          -1.0,
+          1.0
+        ]
+      ]
+    ]
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        -5.5,
+        5.0
+      ],
+      "goal": [
+        6.0,
+        5.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        6.0,
+        5.0
+      ],
+      "goal": [
+        0.0,
+        -3.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        0.0,
+        -3.0
+      ],
+      "goal": [
+        -5.5,
+        5.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.3,
+      "behavior": "social_force",
+      "group_id": null
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.1,
+    "max_steps": 600
+  },
+  "events": []
+}

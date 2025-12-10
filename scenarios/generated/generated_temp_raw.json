@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "scenario_id": "generated_temp",
+    "seed": 42,
+    "prompt_text": "A robot navigating through a busy plaza with 5 humans",
+    "model_name": "llm-generated"
+  },
+  "map": {
+    "type": "corridor",
+    "bounds": [
+      -6.0,
+      -3.0,
+      6.0,
+      3.0
+    ],
+    "obstacles": []
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": {
+        "x": -5.0,
+        "y": 0.0
+      },
+      "goal": {
+        "x": 5.0,
+        "y": 0.0
+      },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": -1
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": {
+        "x": -4.0,
+        "y": 1.5
+      },
+      "goal": {
+        "x": 4.0,
+        "y": 1.5
+      },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": -1
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": {
+        "x": 4.5,
+        "y": -1.0
+      },
+      "goal": {
+        "x": -4.5,
+        "y": -1.0
+      },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": -1
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": {
+        "x": -3.0,
+        "y": -2.0
+      },
+      "goal": {
+        "x": 3.0,
+        "y": -2.0
+      },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": -1
+    },
+    {
+      "id": 4,
+      "role": "human",
+      "start": {
+        "x": 5.0,
+        "y": 2.0
+      },
+      "goal": {
+        "x": -5.0,
+        "y": 2.0
+      },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": -1
+    },
+    {
+      "id": 5,
+      "role": "human",
+      "start": {
+        "x": 0.0,
+        "y": -2.5
+      },
+      "goal": {
+        "x": 0.0,
+        "y": 2.5
+      },
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": -1
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.5
+  },
+  "sim": {
+    "dt": 0.05,
+    "max_steps": 1000
+  },
+  "events": []
+}

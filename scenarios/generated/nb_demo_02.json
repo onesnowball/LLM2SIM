@@ -1,0 +1,141 @@
+{
+  "metadata": {
+    "scenario_id": "nb_demo_02",
+    "seed": 42,
+    "prompt_text": "Intersection where the robot turns left while people cross from all sides.",
+    "model_name": "gemini-2.5-flash"
+  },
+  "map": {
+    "type": "corridor",
+    "bounds": [
+      -6.0,
+      -3.0,
+      6.0,
+      3.0
+    ],
+    "obstacles": []
+  },
+  "agents": [
+    {
+      "id": 0,
+      "role": "robot",
+      "start": [
+        4.0,
+        -2.0
+      ],
+      "goal": [
+        -4.0,
+        2.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 0
+    },
+    {
+      "id": 1,
+      "role": "human",
+      "start": [
+        -4.0,
+        2.0
+      ],
+      "goal": [
+        4.0,
+        -2.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 0
+    },
+    {
+      "id": 2,
+      "role": "human",
+      "start": [
+        -4.0,
+        -2.0
+      ],
+      "goal": [
+        4.0,
+        2.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 0
+    },
+    {
+      "id": 3,
+      "role": "human",
+      "start": [
+        4.0,
+        2.0
+      ],
+      "goal": [
+        -4.0,
+        -2.0
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 0
+    },
+    {
+      "id": 4,
+      "role": "human",
+      "start": [
+        -5.0,
+        0.5
+      ],
+      "goal": [
+        5.0,
+        0.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 0
+    },
+    {
+      "id": 5,
+      "role": "human",
+      "start": [
+        5.0,
+        -0.5
+      ],
+      "goal": [
+        -5.0,
+        -0.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 0
+    },
+    {
+      "id": 6,
+      "role": "human",
+      "start": [
+        0.0,
+        2.5
+      ],
+      "goal": [
+        0.0,
+        -2.5
+      ],
+      "radius": 0.3,
+      "v_pref": 1.0,
+      "behavior": "social_force",
+      "group_id": 0
+    }
+  ],
+  "norms": {
+    "passing_side": "right",
+    "min_distance": 0.6
+  },
+  "sim": {
+    "dt": 0.05,
+    "max_steps": 400
+  },
+  "events": []
+}
