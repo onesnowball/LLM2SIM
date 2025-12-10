@@ -335,7 +335,3 @@ When adding scenarios:
 
 
 ```
-
-## License
-
-[Your license here]
